@@ -1,22 +1,6 @@
 var fs = require('fs');
 
-const htmlTemplate = `
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link media="screen" href="main.css" rel="stylesheet"/>
-  </head>
-  <body>
-
-    <script src="main.js" charset="utf-8"></script>
-  </body>
-</html>
-`;
-
 function check(p) {
-  console.log('checking path: ', p);
   return new Promise((resolve, reject) => {
     fs.exists(p, function(exists) {
       return exists ? resolve() : reject();
@@ -25,24 +9,22 @@ function check(p) {
 }
 
 function writePath(p) {
-  console.log('writing path: ', p);
   return new Promise((resolve, reject) => {
     if (p.lastIndexOf('.') > 0) {
       fs.writeFile(p, '', function(e) {
         if (e) reject('failed to make ' + p);
-        else {console.log('wrote file: ', p);resolve();}
+        resolve();
       });
     } else {
       fs.mkdir(p, function(e) {
         if (e) reject('failed to make ' + p + ' directory');
-        else {console.log('wrote dir: ', p);resolve();}
+        resolve();
       });
     }
   })
 }
 
 function build(fileStructure) {
-  console.log('building files: ', fileStructure);
   if (!fileStructure.length) return;
   const path = fileStructure.shift();
   check(path)
@@ -50,15 +32,6 @@ function build(fileStructure) {
   .catch(writePath.bind(this, path))
   .then(build.bind(this, fileStructure))
 }
-
-const fileStructure = [{
-  app: [
-    'index.html', {
-    scripts: ['index.js'],
-    scss: ['main.scss'],
-    assets: []
-  }]
-}];
 
 function makePaths(structure, root = '.', store = []) {
   if (root.indexOf('.') !== 0) {
@@ -79,4 +52,4 @@ function makePaths(structure, root = '.', store = []) {
   .reduce((a,b)=>{return a.concat(b)},[]);
 }
 
-build(makePaths(fileStructure));
+module.exports = {makePaths, build};
