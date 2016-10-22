@@ -34,13 +34,19 @@ function build(fileStructure) {
 }
 
 function makePaths(structure, root = '.', store = []) {
-  if (root.indexOf('.') !== 0) {
-    throw new Error('Supplied root must begin with ./');
-  }
-  if (root.lastIndexOf('/') === root.length -1) {
+	if (!Array.isArray(structure)) {
+		throw new Error('The contents of your directories must be described as an array. See the contents of your `.scaffoldrc` file');
+	}
+	while (root.lastIndexOf('/') === root.length -1) {
     root = root.slice(0, root.length-1);
   }
+  if (root.indexOf('.') !== 0) {
+		root = './' + root;
+  }
   return store.concat(structure.map(path => {
+		if (path === null || Array.isArray(path) || (typeof path !== 'string' && typeof path !== 'object')) {
+			throw new Error('your directories must contain either strings (for files) or objects (for sub-directories). See the contents of your `.scaffoldrc` file');
+		}
     if ( typeof path === 'string') {
       return root + '/' + path;
     }

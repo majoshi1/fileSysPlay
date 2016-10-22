@@ -1,13 +1,49 @@
-### FS Play
-Playing around with file system. Maybe one day use this project to create a node based build tool.
+### JSON scaffold
+A project that allows you to specify your file structure using JSON and writes those files using Node. Will not overwrite files if they already exist, but will write new files/folders if they are absent.
 
-Currently, the `scaffold.js` file contains a couple of functions:
-  - `makePaths` takes an array and parses it into another array of file paths based on the following (I think I just made this up) convention:
-    - an array denotes a directory.
-    - a string within an array denotes a file in that directory.
-    - an object within an array denotes sub-directories
-    - keys within that object denote the names of the sub-directories
-    - those keys must have an array as their value (this array is a directory, as indicated above)
-  - `build` takes an array of file paths (as returned from `makePaths`) and writes the file structure it describes.
+#### Installation
+- `npm install --save-dev json-scaffold`
 
-Combined, these two functions form the basis for a scaffolding tool that allows one to describe their file structures in JSON. See the example in [the example file](/example/example.js)
+#### Use
+- create a `.scaffoldrc` file in the root of your project
+- populate it with a JSON description of your desired file structure
+- run `json-scaffold path/to/desired/file_structure`
+- path to desired file structure will default to `.` (the current working directory)
+- profit
+
+#### How to write your JSON file sturcture
+- Directories are denoted with objects. The object's key is the name of the directory. An object's values MUST be arrays.
+- Directory contents are denoted with an array. The root of your JSON object must be an array.
+- Files are denoted with strings. Include the file name and its extension.
+
+#### Example file structure
+```json
+[{
+  "app": [
+    "index.html",
+    "404.html", {
+	    "styles": [
+	      "main.scss"
+	    ],
+	    "scripts": [
+	      "entry.js"
+	    ],
+	    "assets": [{
+	      "fonts": [],
+	      "images": []
+	    }]
+		}
+	]
+}]
+```
+outputs the following files/directories:
+- `./app/`
+- `./app/styles/`
+- `./app/scripts/`
+- `./app/assets/`
+- `./app/index.html`
+- `./app/404.html`
+- `./app/styles/main.scss`
+- `./app/scripts/entry.js`
+- `./app/assets/fonts/`
+- `./app/assets/images/`

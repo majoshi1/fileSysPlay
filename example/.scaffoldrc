@@ -1,0 +1,18 @@
+[{
+  "app": [
+		"",
+    "index.html",
+    "404.html", {
+	    "styles": [
+	      "main.scss"
+	    ],
+	    "scripts": [
+	      "entry.js"
+	    ],
+	    "assets": [{
+	      "fonts": [],
+	      "images": []
+	    }]
+		}
+	]
+}]
