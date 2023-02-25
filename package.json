@@ -1,5 +1,5 @@
 {
-  "name": "scaffold-app",
+  "name": "scaffold-any-app",
   "version": "0.1.0",
   "description": "a file structure scaffolding tool that builds files based on a a json format.",
   "main": "index.js",
@@ -9,7 +9,7 @@
     "test": "mocha"
   },
   "bin": {
-    "json-scaffold": "bin/index.js"
+    "scaffold-any-app": "bin/index.js"
   },
   "devDependencies": {
     "chai": "^3.5.0",
