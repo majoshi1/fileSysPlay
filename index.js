@@ -1,4 +1,5 @@
 var fs = require('fs');
+const contents = {};
 
 function check(p) {
   return new Promise((resolve, reject) => {
@@ -10,12 +11,17 @@ function check(p) {
 
 function writePath(p) {
   return new Promise((resolve, reject) => {
-    if (p.lastIndexOf('.') > 0) {
-      fs.writeFile(p, '', function(e) {
-        if (e) reject('failed to make ' + p);
+    const lastSlashIndex = p.lastIndexOf('/');
+    if (p.substr(lastSlashIndex).lastIndexOf('.') > 0) {
+      const content = contents[p];
+      // console.log(content);
+      // console.log('Creating file: '+p);
+      fs.writeFile(p, content, function(e) {
+        if (e) reject('failed to make ' + p + ', ' + e);
         resolve();
       });
     } else {
+      // console.log('Creating dir: '+p);
       fs.mkdir(p, function(e) {
         if (e) reject('failed to make ' + p + ' directory');
         resolve();
@@ -25,6 +31,7 @@ function writePath(p) {
 }
 
 function build(fileStructure) {
+  // console.log(fileStructure);
   if (!fileStructure.length) return;
   const path = fileStructure.shift();
   check(path)
@@ -33,9 +40,11 @@ function build(fileStructure) {
   .then(build.bind(this, fileStructure))
 }
 
-function makePaths(structure, root = '.', store = []) {
+function makePaths(structure, root, store) {
+	if (! root) {root = '.';}
+	if (!Array.isArray(store)) {store = [];}
 	if (!Array.isArray(structure)) {
-		throw new Error('The contents of your directories must be described as an array. See the contents of your `.scaffoldrc` file');
+		throw new Error('The contents of your directories must be described as an array. See the contents of your `files.js` file');
 	}
 	while (root.lastIndexOf('/') === root.length -1) {
     root = root.slice(0, root.length-1);
@@ -44,11 +53,24 @@ function makePaths(structure, root = '.', store = []) {
 		root = './' + root;
   }
   return store.concat(structure.map(path => {
-		if (path === null || Array.isArray(path) || (typeof path !== 'string' && typeof path !== 'object')) {
-			throw new Error('your directories must contain either strings (for files) or objects (for sub-directories). See the contents of your `.scaffoldrc` file');
+		if (path === null || (typeof path !== 'string' && typeof path !== 'object')) {
+			throw new Error('your directories must contain either strings (for files) or objects (for sub-directories). See the contents of your `files.js` file');
 		}
     if ( typeof path === 'string') {
-      return root + '/' + path;
+      const filePath = root + '/' + path;
+      contents[filePath] = '';
+      return filePath;
+    } else if ( Array.isArray(path)) {
+      const object = path[0];
+      let key = '';
+      let content = '';
+      for (const property in object) {
+        content = object[property];
+        key = property;
+      }
+      const filePath = root + '/' + key;
+      contents[filePath] = content.trim();
+      return filePath;
     }
     return Object.keys(path).map(key => {
       store.push(root + '/' + key);

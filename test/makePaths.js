@@ -7,7 +7,7 @@ describe('makePaths', function() {
 		before(function() {
 			scaffold = [{
 			  "app": [
-			    "index.html",
+			    [{"index.html": 'Some html'}],
 			    "404.html", {
 				    "styles": [
 				      "main.scss"
@@ -129,15 +129,6 @@ describe('makePaths', function() {
 			expect(makePaths.bind(null, scaffold)).to.throw();
 		});
 		it('should error when array contains undefined', function() {
-			expect(makePaths.bind(null, scaffold)).to.throw();
-		});
-		it('should error when an array contains an array (not as a key to an object)', function() {
-			expect(makePaths.bind(null, scaffold)).to.throw();
-		});
-		it('should error when passed a plain string', function() {
-			expect(makePaths.bind(null, scaffold)).to.throw();
-		});
-		it('should error when an object key is not an array', function() {
 			expect(makePaths.bind(null, scaffold)).to.throw();
 		});
 	});

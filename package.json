@@ -1,17 +1,18 @@
 {
-  "name": "json-scaffold",
+  "name": "scaffold-app",
   "version": "0.1.0",
   "description": "a file structure scaffolding tool that builds files based on a a json format.",
   "main": "index.js",
   "author": "nicerhugs",
   "license": "WTFPL",
-	"scripts": {
-		"test": "mocha"
-	},
+  "scripts": {
+    "test": "mocha"
+  },
   "bin": {
     "json-scaffold": "bin/index.js"
   },
   "devDependencies": {
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "mocha": "^10.2.0"
   }
 }

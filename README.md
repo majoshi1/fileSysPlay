@@ -5,7 +5,7 @@ A project that allows you to specify your file structure using JSON and writes t
 - `npm install --save-dev json-scaffold`
 
 #### Use
-- create a `.scaffoldrc` file in the root of your project
+- create a `files.js` file in the root of your project
 - populate it with a JSON description of your desired file structure
 - run `json-scaffold path/to/desired/file_structure`
 - path to desired file structure will default to `.` (the current working directory)
@@ -17,13 +17,18 @@ A project that allows you to specify your file structure using JSON and writes t
 - Files are denoted with strings. Include the file name and its extension.
 
 #### Example file structure
-```json
+```js
 [{
   "app": [
-    "index.html",
+    [{"index.html": `
+First line
+Second line`}],
     "404.html", {
 	    "styles": [
-	      "main.scss"
+	      [{"main.scss": `
+First line
+Second line
+Third line`}]
 	    ],
 	    "scripts": [
 	      "entry.js"

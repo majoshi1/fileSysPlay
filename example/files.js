@@ -1,10 +1,15 @@
 [{
   "app": [
 		"",
-    "index.html",
+	[{"index.html": `
+First line
+Second line`}],
     "404.html", {
 	    "styles": [
-	      "main.scss"
+	      [{"main.scss": `
+First line
+Second line
+Third line`}]
 	    ],
 	    "scripts": [
 	      "entry.js"
