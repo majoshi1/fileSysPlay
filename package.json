@@ -1,9 +1,9 @@
 {
   "name": "scaffold-any-app",
-  "version": "0.1.0",
-  "description": "a file structure scaffolding tool that builds files based on a a json format.",
+  "version": "0.1.1",
+  "description": "a file structure scaffolding tool that can create any application.",
   "main": "index.js",
-  "author": "nicerhugs",
+  "author": "majoshi1",
   "license": "WTFPL",
   "scripts": {
     "test": "mocha"

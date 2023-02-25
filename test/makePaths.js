@@ -3,7 +3,7 @@ var makePaths = require('../index.js').makePaths;
 
 describe('makePaths', function() {
 	var scaffold;
-	describe('valid json', function() {
+	describe('valid input', function() {
 		before(function() {
 			scaffold = [{
 			  "app": [
@@ -115,7 +115,7 @@ describe('makePaths', function() {
 		});
 	});
 
-	describe('invalid json format', function() {
+	describe('invalid input format', function() {
 		var scaffolds = [[1,2,4], [null], [undefined], [[]], '', [{"app": {"scripts": []}}]]
 		var counter = 0;
 		beforeEach(function() {
