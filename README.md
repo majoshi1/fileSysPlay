@@ -1,5 +1,14 @@
 ### Scaffold Any App
-This utility allows you to specify your application folders, files and their contents in a single file and generates the structure. Will not overwrite files if they already exist, but will write new files/folders, if they are absent.
+Creates the application structure from single input file. Input can be application folders, files and their contents in a single file. Will not overwrite files if they already exist, but will write new files/folders, if they are absent. 
+
+### Why?
+An application can have large number of smaller-files and folders.
+
+e.g. Framework-provided generators like:
+- CRA - Create-React-App
+- Spring Initializr - start.spring.io
+
+This applies to any kind of micro-architectures. This utility can be useful to maintain boiler-plate project in single file. So even after scaffold, changes can be made to scaffold file and can be used for future similar projects.
 
 #### Installation
 - `npm install --save-dev scaffold-any-app`
@@ -41,7 +50,7 @@ Third line`}]
 	]
 }]
 ```
-outputs the following files/directories:
+Creates the following files/directories, with contents:
 - `./app/`
 - `./app/styles/`
 - `./app/scripts/`
