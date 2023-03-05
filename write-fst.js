@@ -25,7 +25,14 @@ async function writeFiles(folder, o, ignoreArr) {
             }
         } else if(key !== 'f' && ignoreArr.indexOf( key ) < 0) {
             //console.log('file created : ' + (folder + '.' + typeof o[key]))
-            await fs.writeFile(folder, o[key]);
+            //console.log({folder: folder, o: o});
+            if(typeof o[key] === 'boolean'){
+              // Skip
+            } else if(!o.b){
+              await fs.writeFile(folder, o[key]);
+            } else {
+              await fs.writeFile(folder, o[key], "binary");
+            }
         }
     }
 }
@@ -36,7 +43,7 @@ async function buildTree(tree) {
       const entry = tree[name];
       if ("file" in entry) {
         const contents = entry.file.contents;
-        const stringContents = typeof contents === "string" ? contents : binaryString(contents);
+        const stringContents = typeof contents === "string" ? contents : binaryString(atob(contents.base64));
         const binary = typeof contents === "string" ? {} : { b: true };
         //console.log({name: name, entry: entry});
         newTree.d[name] = { f: { c: stringContents, ...binary } };
@@ -47,10 +54,14 @@ async function buildTree(tree) {
       newTree.d[name] = newEntry;
     }
     return newTree;
-  }
-  
+  } 
 
-  function binaryString(bytes) {
+  function binaryString(contents) {
+    const bytes = [];
+    contents = eval("("+contents+")");
+    for (let key in contents) {
+      bytes.push(contents[key]);
+    }
     let result = "";
     for (const byte of bytes) {
       result += String.fromCharCode(byte);

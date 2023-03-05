@@ -28,10 +28,8 @@ async function createFstRec(path, childrenOnly, ignoreArr) {
   const lastIndex = isNix ? path.lastIndexOf("/") : path.lastIndexOf("\\");
   const key = path.substr(lastIndex+1, path.length);
   const ignoreItem = ignoreArr.indexOf(key) >= 0;
-
   if (stats.isFile() && !ignoreItem) {
-    let contents = await readFile(path)
-    contents = '`'+`${contents}`+'`' 
+    const contents = await readFile(path)
     return {
       [name]: {
         file: {
@@ -84,10 +82,14 @@ async function readFile(path) {
     text = text.replace(/\r\n/g, '\n');
     text = text.replace(/\r/g, '\n');
     text = text.replace(/`/g, '\\`');
-    text = text.replace(/\$/g, '\\\$');
-    return text    
+    text = text.replace(/\$/g, '\\\$');    
+    text = '`'+`${text}`+'`' 
+    return text;
   } else {
-    return new Uint8Array(fileData)
+    const binary = new Uint8Array(fileData);
+    // console.log({type:typeof binary, binary: binary});
+    const b64 = btoa(JSON.stringify(binary));
+    return {base64: b64};
   }
 }
 
