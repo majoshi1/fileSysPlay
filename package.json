@@ -1,6 +1,6 @@
 {
   "name": "scaffold-any-app",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "a file structure scaffolding tool that can create any application.",
   "main": "index.js",
   "author": "majoshi1",
@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "istextorbinary": "^6.0.0",
     "mocha": "^10.2.0"
   },
   "keywords": [

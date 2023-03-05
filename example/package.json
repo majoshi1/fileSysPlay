@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "scaffold-any-app ../../"
+    "create": "scaffold-any-app create ./app",
+    "write": "scaffold-any-app write ./app2",
+    "create-write": "scaffold-any-app create-write ./app ./app3"
   },
   "keywords": [],
   "author": "",
