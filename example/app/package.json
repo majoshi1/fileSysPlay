@@ -6,7 +6,7 @@
       "nodemon": "latest"
     },
     "scripts": {
-      "start": "nodemon index.js"
+      "start": "nodemon src/index.js"
     }
   }
   

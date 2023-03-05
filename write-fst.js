@@ -23,7 +23,7 @@ async function writeFiles(folder, o, ignoreArr) {
                   writeFiles(folder + name, o[key], ignoreArr);
               }
             }
-        } else if(key !== 'f') {
+        } else if(key !== 'f' && ignoreArr.indexOf( key ) < 0) {
             //console.log('file created : ' + (folder + '.' + typeof o[key]))
             await fs.writeFile(folder, o[key]);
         }

@@ -24,6 +24,13 @@ This applies to any kind of micro-architectures. This utility can be useful to m
 
 #### Usage
 `scaffold-any-app <mode> <folder>`
+#### Example package.json
+```json
+"scripts": {
+  "create": "scaffold-any-app create ./app > files.js",
+  "write": "scaffold-any-app write ./app2"
+}
+```
 ##### Create Mode
 Creates single file from scaffold folder.
 ###### Steps:

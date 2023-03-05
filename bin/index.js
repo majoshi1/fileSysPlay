@@ -8,23 +8,8 @@ const mode = process.argv[2] || 'create';
 const folder = process.argv[3] || './';
 
 async function createTree() {
-    await createFst(folder);
-}
-
-function getIgnoreArr() {
-	let data = '';
-	try{
-		data = fs.readFileSync('.gitignore');
-		data = data.toString().split("\n");
-	}catch(e){}
-	const array = data;
-	const ignoreArr = [];
-	for(i in array) {
-		if(!array[i].startsWith("#")){
-			ignoreArr.push(array[i]);
-		}
-	}
-	return data;	
+	const ignoreArr = getIgnoreArr();
+    await createFst(folder, true, ignoreArr);
 }
 
 async function writeTree() {
@@ -33,6 +18,25 @@ async function writeTree() {
 		const str = data.replace(/[^\x00-\x7F]/g, "");
 		writeFst(eval(str), folder, ignoreArr);
 	});
+}
+
+function getIgnoreArr() {
+	let data = '';
+	try{
+		data = fs.readFileSync('.gitignore');
+		data = data.toString();
+		data = data.replace(/\r\n/g, '\n');
+		data = data.split("\n");
+	}catch(e){}
+	const array = data;
+	const ignoreArr = [];
+	for(i in array) {
+		let text = array[i].trim();
+		if(!text.startsWith("#")){		
+			ignoreArr.push(text);
+		}
+	}
+	return data;	
 }
 
 if(mode === 'create'){	
