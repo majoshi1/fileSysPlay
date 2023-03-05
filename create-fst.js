@@ -3,8 +3,8 @@ var _path = require('path');
 var typeUtils = require('util/types');
 var isText = require('istextorbinary').isText;
 
-async function createFst(path, childrenOnly = true) {
-    const fst = await createFstRec(path, childrenOnly);
+async function createFst(path, childrenOnly = true, ignoreArr = [ 'target', 'node_modules', 'classes', 'build' ]) {
+    const fst = await createFstRec(path, childrenOnly, ignoreArr);
     let output = JSON.stringify(fst, null, 2);
     output = output.replace(/\"`/g, '`');
     output = output.replace(/`\"/g, '`');    
@@ -14,7 +14,7 @@ async function createFst(path, childrenOnly = true) {
     output = '['+output+']';
     console.log(output);
 }
-async function createFstRec(path, childrenOnly = true) {
+async function createFstRec(path, childrenOnly, ignoreArr) {
   const name = _path.basename(path)
 
   let stats
@@ -24,8 +24,12 @@ async function createFstRec(path, childrenOnly = true) {
     console.log('Failed to stat', e);
     return {}
   }
+  const isNix = path.indexOf("/") > 0;
+  const lastIndex = isNix ? path.lastIndexOf("/") : path.lastIndexOf("\\");
+  const key = path.substr(lastIndex+1, path.length);
+  const ignoreItem = ignoreArr.indexOf(key) >= 0;
 
-  if (stats.isFile()) {
+  if (stats.isFile() && !ignoreItem) {
     let contents = await readFile(path)
     contents = '`'+`${contents}`+'`' 
     return {
@@ -35,12 +39,12 @@ async function createFstRec(path, childrenOnly = true) {
         }      
     }
     }
-  } else if (stats.isDirectory()) {
+  } else if (stats.isDirectory() && !ignoreItem) {
     const dirContents = await readDir(path)
     const children = await dirContents.reduce(
       async (acc, child) => ({
         ...(await acc),
-        ...(await createFstRec(_path.join(path, child), false))
+        ...(await createFstRec(_path.join(path, child), false, ignoreArr))
       }),
       Promise.resolve({})
     )

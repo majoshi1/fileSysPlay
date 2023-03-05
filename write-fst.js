@@ -1,25 +1,27 @@
 var fs = require('fs/promises');
 
-async function writeFst(tree, folder) {
+async function writeFst(tree, folder, ignoreArr = [ 'target', 'node_modules', 'classes', 'build' ]) {
     const newTree = await buildTree(tree[0]);
     let appName = '';
     if(folder) {
         await fs.mkdir(folder);
         appName = folder + '/';
     }
-    writeFiles(appName, newTree);    
+    writeFiles(appName, newTree, ignoreArr);    
 }
 
-async function writeFiles(folder, o) {
+async function writeFiles(folder, o, ignoreArr) {
     for (var key in o) {
         if ( typeof o[key] === 'object' && o[key] !== null) {
-            if(key !== 'd' && key !== 'f' && key.indexOf('.') < 0){
-                // console.log('folder created : ' + (folder + key))
-                await fs.mkdir(folder + key);
-            }
-            if (Object.keys(o[key]).length) {
-                const name = key === 'd' || key === 'f' ? '' : key + '/';
-                writeFiles(folder + name, o[key]);
+            if ( ignoreArr.indexOf( key ) < 0 ) {
+              if(key !== 'd' && key !== 'f' && !o[key].hasOwnProperty('f')){
+                  // console.log('folder created : ' + (folder + key))
+                  await fs.mkdir(folder + key);
+              }
+              if (Object.keys(o[key]).length) {
+                  const name = key === 'd' || key === 'f' ? '' : key + '/';
+                  writeFiles(folder + name, o[key], ignoreArr);
+              }
             }
         } else if(key !== 'f') {
             //console.log('file created : ' + (folder + '.' + typeof o[key]))

@@ -11,9 +11,27 @@ async function createTree() {
     await createFst(folder);
 }
 
+function getIgnoreArr() {
+	let data = '';
+	try{
+		data = fs.readFileSync('.gitignore');
+		data = data.toString().split("\n");
+	}catch(e){}
+	const array = data;
+	const ignoreArr = [];
+	for(i in array) {
+		if(!array[i].startsWith("#")){
+			ignoreArr.push(array[i]);
+		}
+	}
+	return data;	
+}
+
 async function writeTree() {
+	const ignoreArr = getIgnoreArr();
 	fs.readFile('./files.js', 'utf8', (e,  data) => {
-		writeFst(eval(data), folder);
+		const str = data.replace(/[^\x00-\x7F]/g, "");
+		writeFst(eval(str), folder, ignoreArr);
 	});
 }
 

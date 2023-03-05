@@ -37,6 +37,8 @@ Creates scaffold folder from single file.
 - Run `scaffold-any-app write ./app2`
 - This will make a new app2 folder from input file structure.
 
+The utility will look for `.gitignore` file for ignoring files/folders. If not available, it will ignore `'target', 'node_modules', 'classes', 'build'`, by default. 
+
 #### Example file structure
 ```js
 [{
