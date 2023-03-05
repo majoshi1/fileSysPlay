@@ -1,6 +1,6 @@
 {
   "name": "scaffold-any-app",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "a file structure scaffolding tool that can create any application.",
   "main": "index.js",
   "author": "majoshi1",

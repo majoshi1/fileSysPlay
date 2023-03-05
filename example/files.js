@@ -1,4 +1,20 @@
 [{
+  "package.json": {
+    "file": {
+      "contents": `{
+    "name": "example-app",
+    "type": "module",
+    "dependencies": {
+      "express": "latest",
+      "nodemon": "latest"
+    },
+    "scripts": {
+      "start": "nodemon src/index.js"
+    }
+  }
+  `
+    }
+  },
   "src": {
     "directory": {
       "assets": {
@@ -24,22 +40,6 @@ app.listen(port, () => {
   console.log(\`App is live at http://localhost:\${port}\`);
 });
 `
-        }
-      },
-      "package.json": {
-        "file": {
-          "contents": `{
-    "name": "example-app",
-    "type": "module",
-    "dependencies": {
-      "express": "latest",
-      "nodemon": "latest"
-    },
-    "scripts": {
-      "start": "nodemon index.js"
-    }
-  }
-  `
         }
       }
     }
