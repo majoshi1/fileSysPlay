@@ -4,14 +4,11 @@ var typeUtils = require('util/types');
 var isText = require('istextorbinary').isText;
 
 async function createFst(path, childrenOnly = true, ignoreArr = [ 'target', 'node_modules', 'classes', 'build' ]) {
+    // Generate structure recurssively
     const fst = await createFstRec(path, childrenOnly, ignoreArr);
+    // Obtain string
     let output = JSON.stringify(fst, null, 2);
-    output = output.replace(/\"`/g, '`');
-    output = output.replace(/`\"/g, '`');    
-    output = output.replaceAll("\\\\", "\\");
-    output = output.replaceAll("\\n", "\n");
-    output = output.replaceAll("\\\"", "\"");
-    output = '['+output+']';
+    output = formatOutput(output);
     console.log(output);
 }
 async function createFstRec(path, childrenOnly, ignoreArr) {
@@ -78,12 +75,8 @@ async function readDir(path) {
 async function readFile(path) {
   const fileData = await fs.readFile(path)
   if (isText(path, fileData)) {
-    let text = fileData.toString("utf-8")
-    text = text.replace(/\r\n/g, '\n');
-    text = text.replace(/\r/g, '\n');
-    text = text.replace(/`/g, '\\`');
-    text = text.replace(/\$/g, '\\\$');    
-    text = '`'+`${text}`+'`' 
+    let text = fileData.toString("utf-8");
+    text = formatFileContent(text);
     return text;
   } else {
     const binary = new Uint8Array(fileData);
@@ -91,6 +84,29 @@ async function readFile(path) {
     const b64 = btoa(JSON.stringify(binary));
     return {base64: b64};
   }
+}
+
+function formatFileContent(text) {
+    // Format file content
+    text = text.replace(/\r\n/g, '\n');
+    text = text.replace(/\r/g, '\n');
+    text = text.replace(/`/g, '\\`');
+    text = text.replace(/\\n/g, 'SLASH_NEWLINE');
+    text = '`'+`${text}`+'`';
+    return text;
+}
+
+function formatOutput(text) {
+    // Format output
+    text = text.replace(/\"`/g, '`');
+    text = text.replace(/`\"/g, '`');    
+    text = text.replaceAll("\\\\`", "\\`");
+    text = text.replaceAll("\\n", "\n");
+    text = text.replaceAll("\\\"", "\"");    
+    text = text.replaceAll("${", "$\\{");
+    text = text.replaceAll("SLASH_NEWLINE", "\\\\n");    
+    text = '['+text+']';
+    return text;  
 }
 
 module.exports = {createFst};

@@ -15,8 +15,7 @@ async function createTree() {
 async function writeTree() {
 	const ignoreArr = getIgnoreArr();
 	fs.readFile('./files.js', 'utf8', (e,  data) => {
-		const str = data.replace(/[^\x00-\x7F]/g, "");
-		writeFst(eval(str), folder, ignoreArr);
+		writeFst(eval(data), folder, ignoreArr);
 	});
 }
 
