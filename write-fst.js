@@ -1,7 +1,7 @@
 var fs = require('fs/promises');
 
 async function writeFst(tree, folder) {
-    const newTree = await buildTree(tree);
+    const newTree = await buildTree(tree[0]);
     let appName = '';
     if(folder) {
         await fs.mkdir(folder);
@@ -37,12 +37,10 @@ async function buildTree(tree) {
         const stringContents = typeof contents === "string" ? contents : binaryString(contents);
         const binary = typeof contents === "string" ? {} : { b: true };
         //console.log({name: name, entry: entry});
-        //await fs.writeFile(p, stringContents);
         newTree.d[name] = { f: { c: stringContents, ...binary } };
         continue;
       }
       //console.log({name: name, entry: entry});
-      //await fs.mkdir(name);
       const newEntry = await buildTree(entry.directory);
       newTree.d[name] = newEntry;
     }

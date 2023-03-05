@@ -16,17 +16,17 @@ This applies to any kind of micro-architectures. This utility can be useful to m
 #### Usage
 `scaffold-any-app <mode> <folder> [foler]`
 ##### Create Mode
-- Create scaffold application folder.
+Creates single file from scaffold folder.
+###### Steps:
+- Create a new scaffold application folder, say app, with all files and sub-folders.
 - Run `scaffold-any-app create ./app`
-- This will output the structure.
+- This will create the structure in file `files.js`.
 ##### Write Mode
+Creates scaffold folder from single file.
+###### Steps:
 - Create a `files.js` file in the root of your project
 - Run `scaffold-any-app write ./app2`
-- This will create the file and folder as per input file.
-##### Create & Write Mode
-- Create scaffold application folder.
-- Run `scaffold-any-app create-write ./app ./app3`
-- This will create the new app3 folder from app folder.
+- This will create a new app2 folder from input file structure.
 
 #### Example file structure
 ```js

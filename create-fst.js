@@ -4,6 +4,17 @@ var typeUtils = require('util/types');
 var isText = require('istextorbinary').isText;
 
 async function createFst(path, childrenOnly = true) {
+    const fst = await createFstRec(path, childrenOnly);
+    let output = JSON.stringify(fst, null, 2);
+    output = output.replace(/\"`/g, '`');
+    output = output.replace(/`\"/g, '`');    
+    output = output.replaceAll("\\\\", "\\");
+    output = output.replaceAll("\\n", "\n");
+    output = output.replaceAll("\\\"", "\"");
+    output = '['+output+']';
+    console.log(output);
+}
+async function createFstRec(path, childrenOnly = true) {
   const name = _path.basename(path)
 
   let stats
@@ -15,7 +26,8 @@ async function createFst(path, childrenOnly = true) {
   }
 
   if (stats.isFile()) {
-    const contents = await readFile(path)
+    let contents = await readFile(path)
+    contents = '`'+`${contents}`+'`' 
     return {
       [name]: {
         file: {
@@ -28,7 +40,7 @@ async function createFst(path, childrenOnly = true) {
     const children = await dirContents.reduce(
       async (acc, child) => ({
         ...(await acc),
-        ...(await createFst(_path.join(path, child), false))
+        ...(await createFstRec(_path.join(path, child), false))
       }),
       Promise.resolve({})
     )
@@ -64,7 +76,12 @@ async function readDir(path) {
 async function readFile(path) {
   const fileData = await fs.readFile(path)
   if (isText(path, fileData)) {
-    return fileData.toString("utf-8")    
+    let text = fileData.toString("utf-8")
+    text = text.replace(/\r\n/g, '\n');
+    text = text.replace(/\r/g, '\n');
+    text = text.replace(/`/g, '\\`');
+    text = text.replace(/\$/g, '\\\$');
+    return text    
   } else {
     return new Uint8Array(fileData)
   }
