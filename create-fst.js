@@ -3,14 +3,15 @@ var _path = require('path');
 var typeUtils = require('util/types');
 var isText = require('istextorbinary').isText;
 
-async function createFst(path, childrenOnly = true, ignoreArr = [ 'target', 'node_modules', 'classes', 'build' ]) {
-    // Generate structure recurssively
-    const fst = await createFstRec(path, childrenOnly, ignoreArr);
-    // Obtain string
-    let output = JSON.stringify(fst, null, 2);
-    output = formatOutput(output);
-    console.log(output);
+async function createFst(path, childrenOnly = true, ignoreArr = [ '.git', 'target', 'node_modules', 'classes', 'build' ]) {
+  // Generate structure recurssively
+  const fst = await createFstRec(path, childrenOnly, ignoreArr);
+  // Obtain string
+  let output = JSON.stringify(fst, null, 2);
+  output = formatOutput(output);
+  console.log(output);
 }
+
 async function createFstRec(path, childrenOnly, ignoreArr) {
   const name = _path.basename(path)
 
