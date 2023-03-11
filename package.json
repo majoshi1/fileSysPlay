@@ -4,7 +4,7 @@
   "description": "Create new applications from a single scaffold file and vice versa.",
   "main": "index.js",
   "author": "Manohar Joshi",
-  "license": "WTFPL",
+  "license": "MIT",
   "scripts": {
     "test": "mocha"
   },
