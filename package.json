@@ -1,9 +1,9 @@
 {
   "name": "scaffold-any-app",
-  "version": "0.2.5",
-  "description": "a file structure scaffolding tool that can create any application.",
+  "version": "0.2.6",
+  "description": "Create new applications from a single scaffold file and vice versa.",
   "main": "index.js",
-  "author": "majoshi1",
+  "author": "Manohar Joshi",
   "license": "WTFPL",
   "scripts": {
     "test": "mocha"
@@ -31,6 +31,7 @@
     "spring cloud",
     "spring initializr",
     "maven",
+    "gradle",
     "cdn",
     "static site generator",
     "yeoman"
