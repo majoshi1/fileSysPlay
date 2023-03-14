@@ -1,6 +1,6 @@
 var fs = require('fs/promises');
 var _path = require('path');
-var typeUtils = require('util/types');
+var { typeUtils } = require('util');
 var isText = require('istextorbinary').isText;
 
 async function createFst(path, childrenOnly = true, ignoreArr = [ '.git', 'target', 'node_modules', 'classes', 'build' ]) {
