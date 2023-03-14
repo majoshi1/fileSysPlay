@@ -1,6 +1,6 @@
 var fs = require('fs/promises');
 var _path = require('path');
-var { typeUtils } = require('util');
+var typeUtils = require('util/types');
 var isText = require('istextorbinary').isText;
 
 async function createFst(path, childrenOnly = true, ignoreArr = [ '.git', 'target', 'node_modules', 'classes', 'build' ]) {
@@ -82,8 +82,7 @@ async function readFile(path) {
   } else {
     const binary = new Uint8Array(fileData);
     // console.log({type:typeof binary, binary: binary});
-    const json = JSON.stringify(binary);
-    const b64 = Buffer.from(json).toString('base64');
+    const b64 = btoa(JSON.stringify(binary));
     return {base64: b64};
   }
 }

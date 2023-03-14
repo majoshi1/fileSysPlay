@@ -38,6 +38,11 @@ function getIgnoreArr() {
 	return data;	
 }
 
+if(!process.versions || parseInt(process.versions.node) < 18){
+	console.log('Unsupported platform, please upgrade NodeJS to latest.');
+	return;
+}
+
 if(mode === 'create'){	
 	createTree();
 } else {
